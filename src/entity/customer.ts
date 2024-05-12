@@ -1,5 +1,7 @@
+import Address from "./address";
+
 //Business-Focused Entity
-class Customer {
+export default class Customer {
 
     /*Entity:
     Represents a domain object with a distinct identity.
@@ -8,13 +10,14 @@ class Customer {
 
     _id: string;
     _name: string;
-    _address: string;
     _active: boolean = true;
 
-    constructor(id: string, name: string, address: string) {
+    //Value Object
+    _address!: Address;
+
+    constructor(id: string, name: string) {
         this._id = id;
         this._name = name;
-        this._address = address;
 
         //Auto-validation
         this.validate();
@@ -72,7 +75,7 @@ class Customer {
         return this._name;
     }
 
-    getAddress(): string {
+    getAddress(): Address {
         return this._address;
     }
 
@@ -83,12 +86,12 @@ class Customer {
         this.validate();
     }
 
-    changeAddress(address: string): void {
+    changeAddress(address: Address): void {
         this._address = address;
     }
 
     activate(): void {
-        if (this._address.length === 0)
+        if (this._address !== undefined)
             throw new Error('Address is required');
 
         this._active = true;
@@ -96,6 +99,10 @@ class Customer {
 
     deactivate(): void {
         this._active = false;
+    }
+
+    set address(address: Address) {
+        this._address = address;
     }
 
     /*State: An entity encapsulates the data representing
